@@ -1,0 +1,12 @@
+.ridDefaultStyle {
+	width: 600px;
+	height: 100px;
+	border: 1px solid black;
+	color: blue;
+	position : absolute;
+	left: 20%;
+	top: 20%;
+	cursor: move;
+	z-index: 10;
+	border-radius: 5px;
+}
