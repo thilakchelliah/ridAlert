@@ -1,12 +1,114 @@
 .ridDefaultStyle {
-	width: 600px;
-	height: 100px;
-	border: 1px solid black;
-	color: blue;
-	position : absolute;
+	width: auto;
+	height: auto;
+	border: 1px solid #BDBDBD;
+	color: #707070;
+	position: absolute;
 	left: 20%;
 	top: 20%;
 	cursor: move;
 	z-index: 10;
 	border-radius: 5px;
+	background: rgba(255,255,255,1);
+	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+	font-family: calibri;
+	font-size: 14px;
+	font-weight: bold;
+	font-style: normal;
+}
+
+#DivRidAlertHeader {
+	width: auto;
+	height: 10%;
+	padding: 2%;
+	border-bottom: #BDBDBD solid 1px;
+	position: relative;
+}
+
+#SpnAlertTitle {
+	padding-left: 15px;
+}
+.WndClose {
+	border: 1px solid #BDBDBD;
+	text-decoration: none;
+	position: absolute;
+	top: 0px;
+	right: 5px;
+	width: 25px;
+	text-align: center;
+	border-top: none;
+	font-size: 15px;
+	
+}
+
+.WndClose:hover {
+	background-color: #f73939;
+	color:white;
+}
+#DivRidAlertContent {
+	height: auto;
+}
+#DivContentLeft {
+	width: 15%;
+	padding: 10px;
+	float: left;
+}
+#DivContentRight {
+	width: 60%;
+	float: right;
+	padding: 15px;
+}
+#SpnAlertMessage {
+	width: 90%;
+	word-wrap: break-word;
+}
+#ImgAlertIcon {
+	margin: 10% 10%;
+}
+.BtnRidAlert {
+	-moz-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+	-webkit-box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+	box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+	background: -moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+	background-color: #79bbff;
+	-webkit-border-top-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;
+	border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-moz-border-radius-topright: 3px;
+	border-top-right-radius: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+	-moz-border-radius-bottomright: 3px;
+	border-bottom-right-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomleft: 3px;
+	border-bottom-left-radius: 3px;
+	text-indent: 0;
+	border: 1px solid #84bbf3;
+	display: inline-block;
+	color: #ffffff;
+	height: 25px;
+	line-height: 25px;
+	width: 85px;
+	text-decoration: none;
+	text-align: center;
+	text-shadow: 1px 1px 0px #528ecc;
+}
+.BtnRidAlert:hover {
+	background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+	background: -moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+	background-color: #378de5;
+}
+.BtnRidAlert:active {
+	position: relative;
+	top: 1px;
 }

@@ -4,30 +4,49 @@
 
 		$.fn.ridAlert = function(options) {
 			var settings = $.extend({
-				AlertText : '',
-				HeaderText : '',
-				color : null,
-				fontStyle : null
+				AlertType : 'Alert',
+				AlertIcon : 'css/Img/alert1.png',
+				AlertTitle : 'Alert!',
+				AlertMessage : ''
 			}, options);
 
 			return this.each(function() {
-				$.fn.ridInit(this, settings);
-				$.fn.ridText(this, settings);
+				$.fn.ridInit(this);
+				$.fn.AlertFillContent(this, settings);
 				$.fn.enableDrag(this);
 			});
 
 		};
 
-		$.fn.ridInit = function(elem, settings) { debugger;
-			var headerDiv = "<div style='width:100%;height:20%;' id='ridAlertHeader'>" + settings.HeaderText + "<div>";
-			var ContentDiv = "<div style='width:100%;height:80%;' id='ridAlertAlertText'>" + settings.AlertText + "<div>";
+		$.fn.ridInit = function(elem) { debugger;
+			var headerDiv = "<div  id='DivRidAlertHeader'></div>";
+			var ContentDiv = "<div  id='DivRidAlertContent'></div>";
 			$(elem).append(headerDiv + ContentDiv).addClass("ridDefaultStyle");
 		};
 
-		$.fn.ridText = function(elem, settings) {
-			$(elem).append("<span>" + settings.text + "</span>");
-		};
+		$.fn.AlertFillContent = function(elem, settings) { debugger;
+			switch(settings.AlertType) {
+				case 'Alert':
+					$.fn.AlertBasic(elem, settings);
+					break;
+				default:
+					break;
+			}
 
+		};
+		$.fn.AlertBasic = function(elem, settings) { debugger;
+
+			var AlertHeader = "<span id='SpnAlertTitle'>" + settings.AlertTitle + "</span><a href='#' class='WndClose ridAlertClose'>x</a>";
+			var ContentLeft = "<div  id='DivContentLeft'><img src='" + settings.AlertIcon + "' id='ImgAlertIcon'/></div>";
+			var ContentRight = "<div  id='DivContentRight'><span id='SpnAlertMessage'>" + settings.AlertMessage;
+			ContentRight += "</span></br></br><a href='#' id='BtnOk' class='BtnRidAlert ridAlertClose'>Ok</a></div>";
+			$("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
+			$("#DivRidAlertContent")[0].innerHTML = ContentLeft + ContentRight;
+			$(".ridAlertClose").click(function() {
+				$(elem).hide();
+			});
+
+		};
 		$.fn.enableDrag = function(elem) {
 
 			$(elem).mousedown(function(e) { debugger;
