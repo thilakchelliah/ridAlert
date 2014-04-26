@@ -10,7 +10,32 @@
 			$(function() {
 				$("div").ridAlert({
 					AlertTitle : 'Alert!',
-					AlertMessage : 'Please Do the  changes?'
+					AlertMessage : 'Please Do the  changes?',
+					buttons : [{
+						name : 'Ok',
+						BtnClick : function(e) { debugger;
+							$(e).click(function() {debugger;
+								alert("wroking");
+							});
+						}
+					}, {
+						name : 'Cancel',
+						BtnClick : function(e) { debugger;
+							$(e).click(function() {
+								debugger;
+								alert("wroking2");
+							});
+						}
+					},
+					{
+						name : 'Cancel123',
+						BtnClick : function(e) { debugger;
+							$(e).click(function() {
+								debugger;
+								alert("wroking23");
+							});
+						}
+					}]
 				});
 			});
 		</script>
@@ -18,7 +43,7 @@
 	</head>
 	<body>
 		<h1>RidAlert</h1>
-		<div> </div>
+		<div></div>
 	</body>
 </html>
 

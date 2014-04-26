@@ -7,13 +7,19 @@
 				AlertType : 'Alert',
 				AlertIcon : 'css/Img/alert1.png',
 				AlertTitle : 'Alert!',
-				AlertMessage : ''
+				AlertMessage : '',
+				buttons : [{
+					name : 'Ok',
+					BtnClick : function(elem) {
+					}
+				}]
+				,
 			}, options);
 
 			return this.each(function() {
 				$.fn.ridInit(this);
 				$.fn.AlertFillContent(this, settings);
-				$.fn.enableDrag(this);
+				$.fn.enableDrag(this,false);
 			});
 
 		};
@@ -39,34 +45,43 @@
 			var AlertHeader = "<span id='SpnAlertTitle'>" + settings.AlertTitle + "</span><a href='#' class='WndClose ridAlertClose'>x</a>";
 			var ContentLeft = "<div  id='DivContentLeft'><img src='" + settings.AlertIcon + "' id='ImgAlertIcon'/></div>";
 			var ContentRight = "<div  id='DivContentRight'><span id='SpnAlertMessage'>" + settings.AlertMessage;
-			ContentRight += "</span></br></br><a href='#' id='BtnOk' class='BtnRidAlert ridAlertClose'>Ok</a></div>";
+			ContentRight += "</span></br></br><div id='BtnRidBlock'></div></div>";
 			$("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
 			$("#DivRidAlertContent")[0].innerHTML = ContentLeft + ContentRight;
-			$(".ridAlertClose").click(function() {
-				$(elem).hide();
+			$.fn.AddButtons(elem,settings);
+		};
+		$.fn.AddButtons = function(elem,settings) { debugger;
+			var counter = 0;
+			$(settings.buttons).each(function() { debugger;
+				var button = "<a href='#' id='RidBtn" + counter + "' class='BtnRidAlert'>" + this.name + "</a>";
+				$("#BtnRidBlock")[0].innerHTML += button;
+				this.BtnClick.call(this,$('#RidBtn' + counter));
+				counter++;
 			});
 
 		};
-		$.fn.enableDrag = function(elem) {
+		$.fn.enableDrag = function(elem, enable) {
 
-			$(elem).mousedown(function(e) { debugger;
-				var posX = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX, posY = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
+			if (enable == true) {
+				$(elem).mousedown(function(e) { debugger;
+					var posX = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX, posY = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
 
-				$(elem).addClass("ridDraggable");
-				$(elem).on("mousemove", function(e) { debugger;
-					$(".ridDraggable").css({
-						"position" : "absolute",
-						"left" : e.pageX - posX,
-						"top" : e.pageY - posY,
-						"z-index" : "1000"
+					$(elem).addClass("ridDraggable");
+					$(elem).on("mousemove", function(e) { debugger;
+						$(".ridDraggable").css({
+							"position" : "absolute",
+							"left" : e.pageX - posX,
+							"top" : e.pageY - posY,
+							"z-index" : "1000"
+						});
+					}).on("mouseup", function() {
+						$(elem).removeClass("ridDraggable").css({
+							"z-index" : "10"
+						});
 					});
-				}).on("mouseup", function() {
-					$(elem).removeClass("ridDraggable").css({
-						"z-index" : "10"
-					});
+
 				});
-
-			});
+			}
 
 		};
 
