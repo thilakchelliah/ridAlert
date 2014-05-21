@@ -94,10 +94,11 @@
 	text-indent: 0;
 	border: 1px solid #84bbf3;
 	display: inline-block;
+	white-space: nowrap;
 	color: #ffffff;
-	height: 25px;
+	height: 25%;
 	line-height: 25px;
-	width: 85px;
+	width: 50%;
 	text-decoration: none;
 	text-align: center;
 	text-shadow: 1px 1px 0px #528ecc;
@@ -111,4 +112,16 @@
 .BtnRidAlert:active {
 	position: relative;
 	top: 1px;
+}
+
+#DivAlertInputContent
+{
+    margin:0 auto;
+    padding:15px;
+}
+#BtnRidBlock
+{
+    margin:0 auto;
+    padding:5px;
+    text-align:center;
 }
