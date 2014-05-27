@@ -1,19 +1,32 @@
+//4/24/2014-Test phase
 
 (function ($) {
 
     $.fn.ridAlert = function (options) {
         if (jQuery.type(options) == "object") {
             var settings = $.extend({
-                AlertType: 'Alert',
-                AlertIcon: 'css/Img/alert1.png',
+                AlertType: 'AlertSimple',
                 AlertTitle: 'Alert!',
-                AlertInput: function (inputDiv) { },
-                AlertMessage: '',
-                DragEnable: false,
-                buttons: [{
-                    name: 'Ok',
-                    BtnClick: function (btnElem, alertBoxElem) { $(btnElem).click(function () { $(alertBoxElem).hide(); }) }
-                }]
+                AlertSimple: {
+                    AlertIcon: 'css/Img/alert1.png',
+                    AlertMessage: 'Dude,Please check ,I hope something is wrong',
+                    buttons: [{
+                        name: 'Ok',
+                        BtnClick: function (btnElem, alertBoxElem) {
+                            $(alertBoxElem).hide();
+                        }
+                    }]
+                },
+                AlertComplex: {
+                    Content: function (inputDiv) { },
+                    buttons: [{
+                        name: 'Ok',
+                        BtnClick: function (btnElem, alertBoxElem) {
+                            $(alertBoxElem).hide();
+                        }
+                    }]
+                },
+                DragEnable: false
 
             }, options);
             return this.each(function () {
@@ -31,7 +44,6 @@
                     $(this).hide();
                     break;
                 case 'toggle':
-                    debugger;
                     if ($(this).is(':visible')) {
                         $(this).hide();
                     }
@@ -54,15 +66,15 @@
     };
 
     $.fn.AlertFillContent = function (elem, settings) {
-        debugger;
         switch (settings.AlertType) {
-            case 'Alert':
+            case 'AlertSimple':
                 $.fn.AlertBasic(elem, settings);
                 break;
-            case 'AlertInput':
-                $.fn.AlertInput(elem, settings);
+            case 'AlertComplex':
+                $.fn.AlertComplex(elem, settings);
                 break;
             default:
+                $.fn.AlertBasic(elem, settings);
                 break;
         }
 
@@ -70,22 +82,27 @@
     $.fn.AlertBasic = function (elem, settings) {
 
         var AlertHeader = "<span id='SpnAlertTitle'>" + settings.AlertTitle + "</span><a href='#' class='WndClose ridAlertClose'>x</a>";
-        var ContentLeft = "<div  id='DivContentLeft'><img src='" + settings.AlertIcon + "' id='ImgAlertIcon'/></div>";
-        var ContentRight = "<div  id='DivContentRight'><span id='SpnAlertMessage'>" + settings.AlertMessage;
+        var ContentLeft = "<div  id='DivContentLeft'><img src='" + settings.AlertSimple.AlertIcon + "' id='ImgAlertIcon'/></div>";
+        var ContentRight = "<div  id='DivContentRight'><span id='SpnAlertMessage'>" + settings.AlertSimple.AlertMessage;
         ContentRight += "</span></br></br><div id='BtnRidBlock'></div></div>";
         $("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
         $("#DivRidAlertContent")[0].innerHTML = ContentLeft + ContentRight;
         $(".ridAlertClose").click(function () { $(elem).hide() });
         $.fn.AddButtons(elem, settings);
     };
-  
-    $.fn.AlertInput = function (elem, settings) {
+
+    $.fn.AlertComplex = function (elem, settings) {
         var AlertHeader = "<span id='SpnAlertTitle'>" + settings.AlertTitle + "</span><a href='#' class='WndClose ridAlertClose'>x</a>";
         var Content = "<div  id='DivAlertInputContent'></div>";
         Content += "<div id='BtnRidBlock'></div>";
         $("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
         $("#DivRidAlertContent")[0].innerHTML = Content;
-        settings.AlertInput.call(this, $("#DivAlertInputContent"));
+        $(".ridAlertClose").click(function () { $(elem).hide() });
+        var isContentFunction = $.isFunction(settings.AlertComplex.Content);
+        if (isContentFunction)
+            settings.AlertComplex.Content.call(this, $("#DivAlertInputContent"));
+        else
+            $("#DivAlertInputContent").append(settings.AlertComplex.Content);
         $.fn.AddButtons(elem, settings);
     }
 
@@ -93,41 +110,56 @@
     $.fn.AddButtons = function (elem, settings) {
         var counter = 1;
         var btnClickArray = new Array();
-        $(settings.buttons).each(function () {
-            var button = "<a href='#' id='RidBtn" + counter + "' class='BtnRidAlert'>" + this.name + "</a>";
+        if (settings.AlertType == "AlertSimple") {
+            var buttonObjArray = settings.AlertSimple.buttons;
+        }
+        else {
+            var buttonObjArray = settings.AlertComplex.buttons;
+        }
+        $(buttonObjArray).each(function () {
+            var button = "<a href='#' id='RidBtn_" + counter + "' class='BtnRidAlert'>" + this.name + "</a>";
             $("#BtnRidBlock")[0].innerHTML += button;
             btnClickArray[counter] = this.BtnClick;
             counter++;
         });
         for (var i = 1; i < btnClickArray.length; i++) {
-            btnClickArray[i].call(this, $('#RidBtn' + i), elem);
+            $('#RidBtn_' + i).click(function () {
+                var buttonNumber = (this.id).split('_')[1]
+                btnClickArray[buttonNumber].call(this, this.id, elem);
+            });
+
         }
 
 
     };
 
-    /*Code to enable drag feature */
+    //    /*Code to enable drag feature */
+    //    /*---Drag code from http://css-tricks.com/snippets/jquery/draggable-without-jquery-ui/ -----*/
     $.fn.enableDrag = function (elem, settings) {
 
         if (settings.DragEnable == true) {
-            $(elem).mousedown(function (e) {
-                var posX = e.offsetX === undefined ? e.originalEvent.layerX : e.offsetX, posY = e.offsetY === undefined ? e.originalEvent.layerY : e.offsetY;
-
-                $(elem).addClass("ridDraggable");
-                $(elem).on("mousemove", function (e) {
-                    $(".ridDraggable").css({
-                        "position": "absolute",
-                        "left": e.pageX - posX,
-                        "top": e.pageY - posY,
-                        "z-index": "1000"
+            $("#DivRidAlertHeader").mousedown(function (e) {               
+                    var $drag = $(elem).addClass('draggable');
+                    var z_idx = $drag.css('z-index'),
+                drg_h = $drag.outerHeight(),
+                drg_w = $drag.outerWidth(),
+                pos_y = $drag.offset().top + drg_h - e.pageY,
+                pos_x = $drag.offset().left + drg_w - e.pageX;
+                    $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
+                        $('.draggable').offset({
+                            top: e.pageY + pos_y - drg_h,
+                            left: e.pageX + pos_x - drg_w
+                        }).on("mouseup", function () {
+                            $(this).removeClass('draggable').css('z-index', z_idx);
+                        });
                     });
-                }).on("mouseup", function () {
-                    $(elem).removeClass("ridDraggable").css({
-                        "z-index": "10"
-                    });
-                });
+                    e.preventDefault(); // disable selection
+               
+            }).on("mouseup", function () {
 
+                $(this).removeClass('draggable');
             });
+
         }
 
     };
