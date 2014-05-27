@@ -1,4 +1,3 @@
-//4/24/2014-Test phase
 
 (function ($) {
 
