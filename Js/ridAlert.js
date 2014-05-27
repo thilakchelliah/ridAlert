@@ -10,6 +10,7 @@
                 AlertSimple: {
                     AlertIcon: 'css/Img/alert1.png',
                     AlertMessage: 'Dude,Please check ,I hope something is wrong',
+                    OnclickExit: function () { },
                     buttons: [{
                         name: 'Ok',
                         BtnClick: function (btnElem, alertBoxElem) {
@@ -19,6 +20,7 @@
                 },
                 AlertComplex: {
                     Content: function (inputDiv) { },
+                    OnclickExit: function () { },
                     buttons: [{
                         name: 'Ok',
                         BtnClick: function (btnElem, alertBoxElem) {
@@ -87,7 +89,11 @@
         ContentRight += "</span></br></br><div id='BtnRidBlock'></div></div>";
         $("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
         $("#DivRidAlertContent")[0].innerHTML = ContentLeft + ContentRight;
-        $(".ridAlertClose").click(function () { $(elem).hide() });
+        $(".ridAlertClose").click(function () {
+            $(elem).hide();
+            if ($.isFunction(settings.AlertSimple.OnclickExit))
+                settings.AlertSimple.OnclickExit.call(this, elem);
+        });
         $.fn.AddButtons(elem, settings);
     };
 
@@ -97,7 +103,11 @@
         Content += "<div id='BtnRidBlock'></div>";
         $("#DivRidAlertHeader")[0].innerHTML = AlertHeader;
         $("#DivRidAlertContent")[0].innerHTML = Content;
-        $(".ridAlertClose").click(function () { $(elem).hide() });
+        $(".ridAlertClose").click(function () {
+            $(elem).hide();
+            if ($.isFunction(settings.AlertComplex.OnclickExit))
+                settings.AlertComplex.OnclickExit.call(this, elem);
+        });
         var isContentFunction = $.isFunction(settings.AlertComplex.Content);
         if (isContentFunction)
             settings.AlertComplex.Content.call(this, $("#DivAlertInputContent"));
@@ -138,23 +148,23 @@
     $.fn.enableDrag = function (elem, settings) {
 
         if (settings.DragEnable == true) {
-            $("#DivRidAlertHeader").mousedown(function (e) {               
-                    var $drag = $(elem).addClass('draggable');
-                    var z_idx = $drag.css('z-index'),
+            $("#DivRidAlertHeader").mousedown(function (e) {
+                var $drag = $(elem).addClass('draggable');
+                var z_idx = $drag.css('z-index'),
                 drg_h = $drag.outerHeight(),
                 drg_w = $drag.outerWidth(),
                 pos_y = $drag.offset().top + drg_h - e.pageY,
                 pos_x = $drag.offset().left + drg_w - e.pageX;
-                    $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
-                        $('.draggable').offset({
-                            top: e.pageY + pos_y - drg_h,
-                            left: e.pageX + pos_x - drg_w
-                        }).on("mouseup", function () {
-                            $(this).removeClass('draggable').css('z-index', z_idx);
-                        });
+                $drag.css('z-index', 1000).parents().on("mousemove", function (e) {
+                    $('.draggable').offset({
+                        top: e.pageY + pos_y - drg_h,
+                        left: e.pageX + pos_x - drg_w
+                    }).on("mouseup", function () {
+                        $(this).removeClass('draggable').css('z-index', z_idx);
                     });
-                    e.preventDefault(); // disable selection
-               
+                });
+                e.preventDefault(); // disable selection
+
             }).on("mouseup", function () {
 
                 $(this).removeClass('draggable');
