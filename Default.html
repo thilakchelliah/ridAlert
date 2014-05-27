@@ -1,49 +1,63 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>RidAlertDemo</title>
-		<script src="Js/jquery-1.11.0.js"></script>
-		<script src="Js/ridAlert.js"></script>
-		<script type="text/javascript">
-			$(function() {
-				$("div").ridAlert({
-					AlertTitle : 'Alert!',
-					AlertMessage : 'Please Do the  changes?',
-					buttons : [{
-						name : 'Ok',
-						BtnClick : function(e) { debugger;
-							$(e).click(function() {debugger;
-								alert("wroking");
-							});
-						}
-					}, {
-						name : 'Cancel',
-						BtnClick : function(e) { debugger;
-							$(e).click(function() {
-								debugger;
-								alert("wroking2");
-							});
-						}
-					},
-					{
-						name : 'Cancel123',
-						BtnClick : function(e) { debugger;
-							$(e).click(function() {
-								debugger;
-								alert("wroking23");
-							});
-						}
-					}]
-				});
-			});
-		</script>
-		<link href="css/ridAlert.css" rel="stylesheet" />
-	</head>
-	<body>
-		<h1>RidAlert</h1>
-		<div></div>
-	</body>
-</html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RidAlertDemo</title>
+    <script src="Js/jquery-1.11.0.js"></script>
+    <script src="Js/ridAlert.js"></script>
+    <script type="text/javascript">
 
+        $(function () {
+            debugger;
+            $("div").ridAlert({
+                AlertTitle: 'Enter Your Details!',
+                DragEnable: true,
+                AlertType: 'AlertComplex',
+                AlertComplex: {
+                    Content: function (inputDiv) {
+                        var inputForm = "";
+                        inputForm += '<form name="input" action="demo_form_action.asp" method="get">';
+                        inputForm += '<table style="width: 100%;"><tr><td>&nbsp;UserName</td>';
+                        inputForm += ' <td>&nbsp;<input id="Text1" type="text" /></td></tr><tr>';
+                        inputForm += '<td>&nbsp;Password</td><td>&nbsp;<input id="Password1" type="password" /></td>';
+                        inputForm += ' </tr></table>';
+                        inputForm += '</form>';
+                        inputDiv[0].innerHTML = inputForm;
+                    },
+                    buttons: [{
+                        name: 'Ok',
+                        BtnClick: function (btnElem, alertBoxElem) { alert('You Have clicked Ok'); }
+                    },
+                      {
+                          name: 'Cancel',
+                          BtnClick: function (btnElem, alertBoxElem) { alert('You Have clicked Cancel'); }
+                      }]
+                }
+
+            });
+            $("div").ridAlert("open");
+        });
+      
+    </script>
+    <link href="css/ridAlert.css" rel="stylesheet" />
+    <style type="text/css">
+        #Text1
+        {
+            width: 169px;
+        }
+        #Password1
+        {
+            width: 167px;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        RidAlert</h1>
+    <button onclick="$('div').ridAlert('toggle');">Click this totoggle Alert
+    </button>
+    <div>
+    </div>
+</body>
+</html>
